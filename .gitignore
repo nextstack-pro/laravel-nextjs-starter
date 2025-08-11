@@ -1,0 +1,11 @@
+mysql_data
+.env
+.env.backup
+.env.production
+/.fleet
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+/docs
