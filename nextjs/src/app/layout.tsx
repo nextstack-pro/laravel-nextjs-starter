@@ -20,8 +20,8 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-                                       children,
-                                   }: Readonly<{
+   children,
+}: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
@@ -29,7 +29,13 @@ export default function RootLayout({
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <AuthProvider>
                     {children}
-                    <Toaster position="top-right"/>
+                    <Toaster
+                        position="top-right"
+                        toastOptions={{
+                            duration: 4000,
+                            className: 'text-sm',
+                        }}
+                    />
                 </AuthProvider>
             </body>
         </html>

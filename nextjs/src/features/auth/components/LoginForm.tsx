@@ -6,7 +6,7 @@ import type { LoginCredentials } from '@/types';
 import {useForm, UseFormReturn} from 'react-hook-form';
 import {z} from "zod";
 import {useAuth} from "@/features/auth/hooks/useAuth";
-import {useRouter} from "next/navigation";
+import { useRouter, useSearchParams } from 'next/navigation';
 import {zodResolver} from "@hookform/resolvers/zod";
 
 const loginSchema = z.object({
@@ -17,6 +17,7 @@ const loginSchema = z.object({
 export function LoginForm() {
     const { login, isLoading } = useAuth();
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     const { register, handleSubmit, formState: { errors } } = useForm<LoginCredentials>({
         resolver: zodResolver(loginSchema),
@@ -29,7 +30,12 @@ export function LoginForm() {
     const onSubmit = async (data: LoginCredentials) => {
         const success = await login(data);
         if (success) {
-            router.push('/dashboard');
+            const redirectTo = searchParams.get('redirect') || '/dashboard';
+
+            const isValidRedirect = redirectTo.startsWith('/') && !redirectTo.startsWith('//');
+            const finalRedirect = isValidRedirect ? redirectTo : '/dashboard';
+
+            router.push(finalRedirect);
         }
     };
 
